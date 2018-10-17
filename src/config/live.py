@@ -2,25 +2,24 @@
 Live configuration
 """
 
-# Remote resource section
-BASE_REMOTE_URL = 'https://api.coinmarketcap.com/v2/ticker/'
-
 # Telegram section
-TOKEN = 'provide_real_token'
-CHAT_ID = 'provide_real_chat_id'
+TOKEN = 'provide-token'
+CHAT_ID = 'provide-chat-id'
 
 # Necessary params to gather the data
 PARAMS = [
     {
-        'name': 'BTC',
-        'url': 'https://api.coinmarketcap.com/v2/ticker/1/',
-        'desc': 'Bitcoin',
-        'price': 'data.quotes.USD.price'
+        'name': 'balance',
+        'url': 'https://api.etherscan.io/api?module=account&action=balance&address=0xb10ea0d397db942a1083a4af9c6074ab63bc8c8b',
+        'param': 'result',
+        'search_by': 1
+
     },
     {
-        'name': 'LTC',
-        'url': 'https://api.coinmarketcap.com/v2/ticker/2/',
-        'desc': 'Litecoin',
-        'price': 'data.quotes.USD.price'
+        'name': 'userDividendsWei',
+        'url': 'https://etherscan.io/readContract?a=0xb10ea0d397db942a1083a4af9c6074ab63bc8c8b&v=0xb10ea0d397db942a1083a4af9c6074ab63bc8c8b',
+        '_address': '0x168a71D66255c6fdB70418Ec0d0100920C57333e',
+        'delay': 3,
+        'search_by': 2
     }
 ]

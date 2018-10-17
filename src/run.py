@@ -1,44 +1,34 @@
-import requests as r
-
 import sys
+
 sys.path.insert(0, '..')
 sys.path.insert(0, '../..')
 
-from src.config.debug import PARAMS, BASE_REMOTE_URL, TOKEN, CHAT_ID
+from src.config.debug import PARAMS, TOKEN, CHAT_ID
 from src import telega
-
-
-# Read and set up configuration
-def get_url(url_local, url_base):
-    return url_local if len(url_local) > 0 else url_base
-
-
-# Request the data
-def get_remote_data(url):
-    return r.get(url).json()
-
-
-# Get specific value
-def get_value(path, data=None):
-    path = path.split('.')
-    if len(path) > 0 and data is not None:
-        for it in path:
-            data = data[it]
-    return data
-
+from src.search_by import SearchBy as sb
 
 if __name__ == '__main__':
 
-    msg = str()
+    data = {}
 
     for item in PARAMS:
         print(item)
-        url = get_url(item['url'], BASE_REMOTE_URL)
-        msg += 'Price of {0} is {1}\n'.format(
-            item['name'],
-            get_value(item['price'], get_remote_data(url))
-        )
-        print(msg)
+        data[item['name']] = sb.parse(item['search_by'], **item)
+
+    print(data)
 
     # Send msg to telegram
-    telega.send(TOKEN, CHAT_ID, msg)
+    # Example 1
+    r1 = telega.rule_1(data['balance']['result'], data['userDividendsWei']['result'])
+    if r1['flag']:
+        telega.send(TOKEN, CHAT_ID, r1['msg'])
+
+    # Example 2
+    r2 = telega.rule_2(data['balance']['result'], data['userDividendsWei']['result'])
+    if r2['flag']:
+        telega.send(TOKEN, CHAT_ID, r2['msg'])
+
+    # Example 3
+    r3 = telega.rule_3(data['balance']['result'], data['userDividendsWei']['result'])
+    if r3['flag']:
+        telega.send(TOKEN, CHAT_ID, r3['msg'])
