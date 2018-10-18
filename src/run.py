@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, '..')
 sys.path.insert(0, '../..')
 
-from src.config.debug import PARAMS, TOKEN, CHAT_ID
+from src.config.live import PARAMS, TOKEN, CHAT_ID
 from src import telega
 from src.search_by import SearchBy as sb
 
