@@ -17,6 +17,9 @@ if __name__ == '__main__':
 
     print(data)
 
+    # Test cron job execution (debug purpose only)
+    # telega.send(TOKEN, CHAT_ID, 'Cron job is successfully running')
+
     # Send msg to telegram
     # Example 1
     r1 = telega.rule_1(data['balance']['result'], data['userDividendsWei']['result'])

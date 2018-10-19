@@ -31,4 +31,8 @@ Some links:
 
 **How to setup cron job execution** 
 
-_TBD_
+- Find the `cron.sh` file in the `src` folder
+- Edit it according to its internal comments
+- Execute `chmod +x cron.sh` command in terminal to make the file executable
+- To open crontab file to edit it, execute `crontab -u user_name -e` command
+- Add specific config to run the cron.sh file as a background process. For instance, to run the *.sh file every minute, add line: `* * * * * /actual/path/to/the/cron.sh`
