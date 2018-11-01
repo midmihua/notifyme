@@ -2,30 +2,15 @@ from telegram.ext import Updater
 
 
 # Method should return json with true/false flag and message
-# Example 1
-def rule_1(balance, userDividendsWei):
+def rule_1(balance_o, balance_n):
     # Here could be any condition
     return {
-        'flag': True if (float(balance) > 0 and float(userDividendsWei) > 0) else False,
-        'msg': 'balance: {0}; userDividendsWei: {1}'.format(balance, userDividendsWei)
-    }
-
-
-# Example 2
-def rule_2(balance, userDividendsWei):
-    # Here could be any condition
-    return {
-        'flag': True if float(balance) <= float(userDividendsWei) else False,
-        'msg': 'balance: {0} <= userDividendsWei: {1}'.format(balance, userDividendsWei)
-    }
-
-
-# Example 3
-def rule_3(balance, userDividendsWei):
-    # Here could be any condition
-    return {
-        'flag': True if float(balance) > float(userDividendsWei) else False,
-        'msg': 'balance: {0} > userDividendsWei: {1}'.format(balance, userDividendsWei)
+        'flag': True if (float(balance_o) != float(balance_n)) else False,
+        'msg': 'Old balance: {0} ETH\nNew balance: {1} ETH\nDelta: {2} ETH'
+        .format(
+            str(float(balance_o) / 1000000000000000000),
+            str(float(balance_n) / 1000000000000000000),
+            str(abs(float(balance_n) / 1000000000000000000 - float(balance_o) / 1000000000000000000)))
     }
 
 

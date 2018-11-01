@@ -1,4 +1,5 @@
 import sys
+import json
 
 sys.path.insert(0, '..')
 sys.path.insert(0, '../..')
@@ -7,31 +8,41 @@ from src.config.live import PARAMS, TOKEN, CHAT_ID
 from src import telega
 from src.search_by import SearchBy as sb
 
+
+def read_file():
+    with open('data.json', 'r') as income:
+        result = json.load(income)
+    return result
+
+
+def write_file(result):
+    with open('data.json', 'w') as outcome:
+        json.dump(result, outcome)
+
+
 if __name__ == '__main__':
 
     data = {}
 
-    for item in PARAMS:
-        print(item)
-        data[item['name']] = sb.parse(item['search_by'], **item)
+    try:
 
-    print(data)
+        # get remote http data
+        for item in PARAMS:
+            data[item['name']] = sb.parse(item['search_by'], **item)
 
-    # Test cron job execution (debug purpose only)
-    # telega.send(TOKEN, CHAT_ID, 'Cron job is successfully running')
+        # read data from local file
+        old_data = read_file()
 
-    # Send msg to telegram
-    # Example 1
-    r1 = telega.rule_1(data['balance']['result'], data['userDividendsWei']['result'])
-    if r1['flag']:
-        telega.send(TOKEN, CHAT_ID, r1['msg'])
+        # Send msg to telegram if data is updated
+        rule = telega.rule_1(
+            old_data['balance']['result'],
+            data['balance']['result']
+        )
+        if rule['flag']:
+            telega.send(TOKEN, CHAT_ID, rule['msg'])
 
-    # Example 2
-    r2 = telega.rule_2(data['balance']['result'], data['userDividendsWei']['result'])
-    if r2['flag']:
-        telega.send(TOKEN, CHAT_ID, r2['msg'])
+        # update old data to new one in local file
+        write_file(data)
 
-    # Example 3
-    r3 = telega.rule_3(data['balance']['result'], data['userDividendsWei']['result'])
-    if r3['flag']:
-        telega.send(TOKEN, CHAT_ID, r3['msg'])
+    except Exception as err:
+        print(err)
