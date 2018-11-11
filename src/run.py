@@ -34,7 +34,7 @@ if __name__ == '__main__':
         old_data = read_file()
 
         # Send msg to telegram if data is updated
-        rule = telega.rule_1(
+        rule = telega.rule_2(
             old_data['balance']['result'],
             data['balance']['result']
         )
